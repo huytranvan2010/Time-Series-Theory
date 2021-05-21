@@ -1,5 +1,14 @@
 # Time-Series-Theory
 
+# Trend - tính xu hướng
+Trend thể hiện xu hướng thay đổi của dữ liệu theo thời gian, ví dụ giá nhà tăng theo từng năm...
+
+Tính chu kỳ: tính chất lặp lại của dữ liệu theo thời gian.
+
+Tính thời vụ
+
+Nhiễu: thể hiện tính chất không dự đoán trước được của dữ liệu
+
 # Moving average and diferencing
 Một cách dự đoán đơn giản là tính `moving average`. Ví dụ gia trị tiếp theo bằng trung bình của 30 ngày trước đó. Cách này loại bỏ rất nhiều nhiễu, nó không dự đoán được xu hướng và tính thời vụ. 
 
