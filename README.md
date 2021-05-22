@@ -62,32 +62,32 @@ Tuy nhiên khi dùng RNN để xử lý dữ liệu time series input_shape có 
 ![RNN](images/rnn1.png)
 
 ### Shape of the inputs to the RNN
-[RNN](images/rnn2.png)
+![RNN](images/rnn2.png)
 The inputs are 3-dimensional. Ví dụ có `window_size =30 timesteps`, có `batch_size=4` => input_shape=[4, 30, 1]. Tại mỗi time step, the `memory cell input` sẽ là ma trận `4x1` như hình trên. 
 
-[RNN](images/rnn3.png)
+![RNN](images/rnn3.png)
 Nếu `memory cell` có 3 neurons, lúc đó output tại mỗi time step là `4x3` (4 là batch_size). The full output sẽ là matrix `4x30x3` (tính tất cả các cells).
 
-[RNN](images/rnn4.png)
+![RNN](images/rnn4.png)
 Đối với mạng RNN đơn giản state output H thường bằng chính output ở time step đó. Trong Keras sẽ gọi `SimpleRNN` Do đó ở mỗi cell đầu vào bao gồm current input và previous output. 
 
-[RNN](images/rnn5.png)
+![RNN](images/rnn5.png)
 Đôi khi chúng ta chỉ muốn lấy output ở cell cuối, khi đó ta có dạng `sequence-to-vector`. Việc đơn giản để `return_sequence=False` - đây là chế độ mặc định trong Keras.
 
 ### Outputing a sequence
-[RNN](images/rnn6.png)
+![RNN](images/rnn6.png)
 Mạng RNN có 2 recurrent layer và 1 Dense layer, Recurrent layer đầu tiên để `return_sequence=True` vì có recurrent layer thứ hai. Recurrent layer thứ 2 không có `return_sequence=True` do đó nó chỉ đưa ra output ở cell cuối cùng, cái này sẽ kết nối với Dense layer.
 
-[RNN](images/rnn7.png)
+![RNN](images/rnn7.png)
 Chú ý đến `input_shape=[None, 1]` trên hình. TF cho dimension đầy tiên là `batch_size` có có thể có kích thước tùy ý, nên không cần biểu diễn vào đó. Dimension tiếp theo là `# time steps`, có thể đặt là `None` (như hình), điều này ám chỉ RNN có thể xử lý chuỗi với chiều dài bất kì. Dimension cuối cùng là 1 do ta đang sử dụng `univariate time series`. 
 
-[RNN](images/rnn8.png)
+![RNN](images/rnn8.png)
 Nếu ở recurrent layer thứ 2 set `return_sequence=True` nó sẽ trả về sequence, do đó Dense layer sẽ nhận vào sequence như là input. Nên nhớ nếu batch_size = 1 (1 example) thì mỗi output là một vector, gộp tất cả vector lại ta sẽ có 2d array mà Dense layer ở dạng vector. Do vậy để xử lý điều này Keras sử dụng Dense layer cho mỗi outputở các step độc lập nhau. Cái này sẽ cho chúng ta `sequence-to-sequence RNN`, nó nhận vào batches of sequences và đưa ra batch of sequences cùng độ dài. 
 
 `RNN layer` nếu để `return_sequence=True` nó sẽ trả về tất cả các output ở các cell. Điều này là cần thiết khi chúng ta muốn stack (đặt) `RNN layer` lên `RNN layer` trước đó. Trong bài toán giả sử có 3 layer gồm hai `RNN layer` và một Dense layer. Nếu `RNN layer` phía sau không đặt `return_sequence=True` nó sẽ chỉ trả về 1 output duy nhất ở cell cuối cùng, sau đó output này được connect với lớp Dense layer. Tuy nhiên nếu `RNN layer` phía sau có đặt `return_sequence=True` nó sẽ trả về tất cả output tại các cells. Do đó mỗi output này lại được kết nối với 1 Dense layer (các Dense layer này đọc lập). Thử chạy cái này xem có cho ra output là cái gì?
 
 ### Lambda layer
-[RNN](images/rnn9.png)
+![RNN](images/rnn9.png)
 Ở đây có thêm 2 layers mới sử dụng `Lambda type`. `Lambda layer` giúp chúng ta thực hiện bất kì phép tính nào để mở rộng chức năng của Keras.
 Lambda layer đầu tiên giúp chúng ta về dimensionality. Nhớ lại khi xây dựng dataset sử dụng `window` nó trả về cho chúng ta 2-dimensional batches (dimension đầu tiên là `batch_size`, dimension thứ hai là `# time steps`). Tuy nhiên RNN chờ đợi 3-dimensions `batch_size, # time steps, # dimensionality of series`. Với Lamda layer chúng ta có thể xử lý được việc này mà không cần sửa lại hàm tạo dataset. Sử dụng `Lamda layer` chúng ta mở rộng thêm dimension bằng cách set `input_shape=[None]` (2 dimensions, dimension đầu tiên là batch_size, dimension thứ 2 là # time steps, ở đây chấp nhận time step có chiều dài bất kì), điều này có nghĩa răng model có thể lấy sequences với độ dài bất kì. 
 
