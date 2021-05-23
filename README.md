@@ -108,9 +108,39 @@ Bài trước dùng RNN để dự đoán dữ liệu time series, tuy nhiên nh
 ![lstm](images/lstm1.png)
 
 ![lstm](images/lstm2.png)
+Đối với text sequence `Bidirectional` rất có ý nghĩa tuy nhiên đối với time series data cần thử nghiệm thêm.
+
+### Coding LSTM
+![lstm](images/lstm3.png)
+`tf.keras.backend.clear_session()` xóa bỏ toàn bộ `internal variables` (dễ dàng thử nghiệm mà không bị ảnh hưởng bởi model trước đó).
+Cùng xem kết quả khớp.
+![lstm](images/lstm4.png)
+
+Thay đổi kiến trúc mạng một chút, nhớ để `return_sequence=True`.
+![lstm](images/lstm5.png)
+
+Kết quả đã tốt hơn rất nhiều.
+![lstm](images/lstm6.png)
+
+Thêm một lớp LSTM nữa nhưng kết quả không có sự khác biệt nhiều.
+![lstm](images/lstm7.png)
+
+### More on LSTM
+
+## Real-world time series data
+Trong phần này sẽ đặt một lớp CNN lên trước RNN hay LSTM để xem kết quả cải thiện ra sao.
+
+Convolution áp dụng ngay ở layer đầu tiên, làm như bình thường như ảnh thôi nhưng đây là Conv1D. Conv1D mong đợi 3 dimensios `(batch_size, # time steps, # dimensionality), do đó ở kia mình mở rộng thêm 1 dimensions
+
+# Kết luận
+* Đối với time series nên kết hợp cả `Conv`, `RNN/LSTM` và 'DNN` để có được model dự đoán tốt nhất
+* Thử thay đổi hyperparameters để có thêm kinh nghiệm
+* Đối với time series nên dùng `MAE` làm metrics vì nó không bị ảnh hưởng mạnh bởi các outliers như MSE
 
 # Tài liệu tham khảo
 https://en.wikipedia.org/wiki/Huber_loss
+
+https://datascience.stackexchange.com/questions/12964/what-is-the-meaning-of-the-number-of-units-in-the-lstm-cell
 
 
 
