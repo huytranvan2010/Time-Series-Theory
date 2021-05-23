@@ -99,6 +99,16 @@ Tương tự `Lambda layer` ở cuối có thể giúp quá trình training. Do 
 **Hube loss** - loss function hay được dùng trong regression, loss này ít nhạy với outliers (nhiễu) hơn là `Mean squred error`
 
 Ở phía trên có sử dụng `LearningRateScheduler` để có thể tìm được `learning rate` hợp lý. Sau khi chạy tìm được `learning rate` ta sẽ thay lại learning rate mới vào và không dùng `LearningRateScheduler` nữa.
+
+## LSTM
+Bài trước dùng RNN để dự đoán dữ liệu time series, tuy nhiên nhận thấy vẫn có một đoạn plataeu. Bài này sẽ áp dụng LSTM vào để dự đoán dữ liệu time series. 
+![lstm](images/lstm0.png)
+Ảnh hưởng của các giá trị trước có thể bị quên đi sau một vài time steps. Lý thuyết có thể nhớ được nhưng thực thế rất dễ xảy ra vanishing gradient do đó các giá trị.
+
+![lstm](images/lstm1.png)
+
+![lstm](images/lstm2.png)
+
 # Tài liệu tham khảo
 https://en.wikipedia.org/wiki/Huber_loss
 
